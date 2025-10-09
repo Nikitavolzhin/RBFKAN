@@ -37,8 +37,9 @@ public:
 	
 	Eigen::VectorXd psi(Eigen::VectorXd);
 	Eigen::VectorXd forward(Eigen::VectorXd);
-	void backpropagation(Eigen::VectorXd y_hat, Eigen::VectorXd y);
+	void backpropagation(Eigen::VectorXd y);
 	int grid;
+	int numOfLayers;
 	RBF rbf;
 	std::vector<Layer> weights;
 	std::vector<Eigen::MatrixXd> dWeights;

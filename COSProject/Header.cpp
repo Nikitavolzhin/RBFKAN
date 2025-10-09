@@ -56,8 +56,9 @@ Eigen::VectorXd Layer::forward(Eigen::VectorXd input)
 
 KAN::KAN(int grid, float begin, float end, int inputDimension, int OutputDimension, int HiddenDimension, int numOfLayers)
 {
+	this->numOfLayers = numOfLayers;
 	if (numOfLayers == 1) {
-		weights.push_back(Layer(grid*inputDimension, HiddenDimension));
+		weights.push_back(Layer(grid*inputDimension, OutputDimension));
 	}
 	else
 	{
@@ -81,7 +82,6 @@ Eigen::VectorXd KAN::forward(Eigen::VectorXd x)
 		activations.push_back(x);
 		for (int i = 0; i < weights.size(); ++i) {
 			activations.push_back(weights[i].forward(rbf.forward(activations[i])));
-			std::cout << rbf.forward(activations[i]) << "\n\n";
 		}
 	}
 	else {
@@ -93,14 +93,21 @@ Eigen::VectorXd KAN::forward(Eigen::VectorXd x)
 	return activations[activations.size()-1];
 }
 
-void KAN::backpropagation(Eigen::VectorXd y_hat, Eigen::VectorXd y)
+void KAN::backpropagation(Eigen::VectorXd y)
 {
+	Eigen::VectorXd y_hat = activations[activations.size() - 1];
 	deltas.clear();
 	dWeights.clear();
-	deltas.push_back(-y+ activations[activations.size() - 1]);
+	//first delta and gradient
+	deltas.push_back(y_hat - y);
 	dWeights.push_back(deltas[0] * rbf.forward(activations[activations.size() - 2]).transpose());
-	//deltas.push_back(psi((weights[0].weights.transpose() * deltas[0]).cwiseProduct(rbf.dRBF(activations[activations.size() - 2]))));
-	weights[0].weights -= 0.2*Eigen::Map<const Eigen::MatrixXd>(dWeights[0].data(), weights[0].weights.rows(), weights[0].weights.cols()).eval();
+	weights[numOfLayers - 1].weights -= 0.2 * dWeights[0];
+	//all consequtive deltas and graidents
+	for(int i = 1; i < numOfLayers; ++i) {
+		deltas.push_back(psi((weights[numOfLayers - i].weights.transpose() * deltas[i-1]).cwiseProduct(rbf.dRBF(activations[activations.size() - 1-i]))));
+		dWeights.push_back(deltas[i] * rbf.forward(activations[activations.size() -2-i]).transpose());
+		weights[numOfLayers-1-i].weights -= 0.2 * dWeights[i];
+	}
 
 }
 
