@@ -1,4 +1,6 @@
 ﻿  COSProject.cpp
+D:\COSProject\COSProject\COSProject.cpp(12,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
+D:\COSProject\COSProject\COSProject.cpp(17,32): warning C4305: 'argument': truncation from 'double' to 'float'
   Header.cpp
   Generating Code...
   COSProject.vcxproj -> D:\COSProject\x64\Debug\COSProject.exe

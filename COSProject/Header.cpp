@@ -93,7 +93,7 @@ Eigen::VectorXd KAN::forward(Eigen::VectorXd x)
 	return activations[activations.size()-1];
 }
 
-void KAN::backpropagation(Eigen::VectorXd y)
+void KAN::backpropagation(Eigen::VectorXd y, float lr)
 {
 	Eigen::VectorXd y_hat = activations[activations.size() - 1];
 	deltas.clear();
@@ -101,12 +101,12 @@ void KAN::backpropagation(Eigen::VectorXd y)
 	//first delta and gradient
 	deltas.push_back(y_hat - y);
 	dWeights.push_back(deltas[0] * rbf.forward(activations[activations.size() - 2]).transpose());
-	weights[numOfLayers - 1].weights -= 0.2 * dWeights[0];
+	weights[numOfLayers - 1].weights -= lr * dWeights[0];
 	//all consequtive deltas and graidents
 	for(int i = 1; i < numOfLayers; ++i) {
 		deltas.push_back(psi((weights[numOfLayers - i].weights.transpose() * deltas[i-1]).cwiseProduct(rbf.dRBF(activations[activations.size() - 1-i]))));
 		dWeights.push_back(deltas[i] * rbf.forward(activations[activations.size() -2-i]).transpose());
-		weights[numOfLayers-1-i].weights -= 0.2 * dWeights[i];
+		weights[numOfLayers-1-i].weights -= lr * dWeights[i];
 	}
 
 }
@@ -119,4 +119,8 @@ Eigen::VectorXd KAN::psi(Eigen::VectorXd x)
 		output(i) = x.segment(grid * i, grid).sum();
 	}
 	return output;
+}
+
+FeedForward::FeedForward()
+{
 }

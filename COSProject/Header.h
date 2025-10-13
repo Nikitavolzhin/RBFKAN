@@ -1,16 +1,22 @@
 #pragma once
 #include <Eigen/Dense>
 
-class RBF
+
+class FeedForward {
+public:
+	FeedForward();
+	virtual Eigen::VectorXd forward(Eigen::VectorXd) = 0;
+};
+
+class RBF : public FeedForward
 {
 public:
 	// contructors
 	RBF(double, double, int);
 	RBF();
 	// memeber functions
-	Eigen::VectorXd forward(Eigen::VectorXd);
+	virtual Eigen::VectorXd forward(Eigen::VectorXd);
 
-//private:
 	// data mebers
 	double start;
 	double end;
@@ -19,25 +25,24 @@ public:
 	Eigen::MatrixXd dRBF(Eigen::VectorXd);
 };
 
-class Layer
+class Layer : public FeedForward
 {
 public:
 	Layer(int, int);
-	Eigen::VectorXd forward(Eigen::VectorXd);
+	virtual Eigen::VectorXd forward(Eigen::VectorXd);
 
-//private:
 	int num;
 	int inputDimension;
 	Eigen::MatrixXd weights;
 };
 
-class KAN {
+class KAN : public FeedForward {
 public:
 	KAN(int grid, float begin, float end, int inputDimension, int OutputDimension, int HiddenDimension, int numOfLayers);
 	
 	Eigen::VectorXd psi(Eigen::VectorXd);
-	Eigen::VectorXd forward(Eigen::VectorXd);
-	void backpropagation(Eigen::VectorXd y);
+	virtual Eigen::VectorXd forward(Eigen::VectorXd);
+	void backpropagation(Eigen::VectorXd y, float lr);
 	int grid;
 	int numOfLayers;
 	RBF rbf;
