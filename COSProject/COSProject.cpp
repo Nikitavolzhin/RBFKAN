@@ -1,8 +1,52 @@
 #include <iostream>
+#include <fstream>
 #include <Eigen/Dense>
-#include "Header.h"
+
 #include <cstdlib>
 #include <unsupported/Eigen/CXX11/Tensor>
+
+#include "Header.h"
+#include "config.h"
+
+Eigen::MatrixXd readCSV(std::string path) {
+    std::ifstream file(path);
+    if (!file.is_open()) {
+        std::cout << "Error: Could not open the file";
+        return Eigen::MatrixXd::Zero(1,1);
+    }
+    std::string line;
+    std::string value;
+    std::vector<std::vector<double>> values;
+    double number;
+    int lineNum = 0;
+    while (std::getline(file, line)) {
+        values.push_back(std::vector<double>());
+        for (char i : line) {
+            if ((i != ',') and (i != ';')) {
+                value += i;
+            }
+            else {
+                number = std::stod(value); 
+                values[lineNum].push_back(number);
+                value = "";
+            }
+        }
+        
+        number = std::stod(value);
+        values[lineNum].push_back(number);
+        lineNum++;
+        value = "";
+    }
+    file.close();
+
+    int cols = values[0].size();
+    int rows = values.size();
+    Eigen::MatrixXd mat(rows, cols);
+    for (int i = 0; i < rows; ++i) {
+        mat.row(i) = Eigen::VectorXd::Map(values[i].data(), values[i].size());
+    }
+    return mat;
+}
 
 void trainer(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y) {
 
@@ -18,15 +62,28 @@ void trainer(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y) {
         std::cout << (yHat - y).array().square() << std::endl;
     }
 }
-
+//NB: add passing by reference where needed for the whole work
 int main()
 {
-
-    KAN kan = KAN(3, 0, 1, 1, 1, 3, 3);
+    Eigen::MatrixXd mat = readCSV("data.csv");
+    Eigen::MatrixXd X = mat.leftCols(1);
+    Eigen::MatrixXd Y = mat.rightCols(1);
     
-    Eigen::MatrixXd X = Eigen::MatrixXd::Random(1000, 1);
-    Eigen::MatrixXd Y = X.array().square();
-    trainer(kan, X, Y);
+    config params;
+    params.start = 0;
+    params.end = 1;
+    params.gridSize = 3;
+    params.inputDimension = 1;
+    params.outputDimension = 1;
+    params.numOfLayers = 3;
+    params.hiddenDimension = 3;
+
+    
+    KAN* kan = dynamic_cast<KAN*>(factoryForward("KAN", params));
+    
+    //Eigen::MatrixXd X = Eigen::MatrixXd::Random(1000, 1);
+    //Eigen::MatrixXd Y = X.array().square();
+    trainer(*kan, X, Y);
 
     return 0;
 }

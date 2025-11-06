@@ -2,14 +2,15 @@
 #include <iostream>
 #include <random>
 
-RBF::RBF(double start, double end, int num)
+RBF::RBF(double start, double end, int gridSize)
 {
 	//To do: write expection for num if it is <2
 
 	this->start = start;
 	this->end = end;
-	this->denom = (end - start) / (num - 1);
-	this->centers = Eigen::VectorXd::LinSpaced(num, start, end);
+	this->denom = (end - start) / (gridSize - 1);
+	this->centers = Eigen::VectorXd::LinSpaced(gridSize, start, end);
+
 }
 
 RBF::RBF() : RBF(0, 1, 1)
@@ -42,7 +43,6 @@ Eigen::MatrixXd RBF::dRBF(Eigen::VectorXd value)
 
 Layer::Layer(int inputDimension, int outputDimesion)
 {
-	this->num = num;
 	this->inputDimension = inputDimension;
 	this->weights = Eigen::MatrixXd::Random(outputDimesion, inputDimension);
 }
@@ -54,40 +54,47 @@ Eigen::VectorXd Layer::forward(Eigen::VectorXd input)
 	return this->weights * input;
 }
 
-KAN::KAN(int grid, float begin, float end, int inputDimension, int OutputDimension, int HiddenDimension, int numOfLayers)
+KAN::KAN(config params)
 {
-	this->numOfLayers = numOfLayers;
-	if (numOfLayers == 1) {
-		weights.push_back(Layer(grid*inputDimension, OutputDimension));
+	this->params = params;
+	if (params.numOfLayers == 1) {
+		weights.push_back(dynamic_cast<Layer*>(factoryForward("sinlgeLayer", params)));
 	}
 	else
 	{
-		for (int i = 0; i < numOfLayers; ++i) {
-			if (i + 1 == numOfLayers)
-				weights.push_back(Layer(grid*HiddenDimension, OutputDimension));
+		for (int i = 0; i < params.numOfLayers; ++i) {
+			if (i + 1 == params.numOfLayers)
+				weights.push_back(dynamic_cast<Layer*>(factoryForward("outputLayer", params)));
 			else if (i == 0)
-				weights.push_back(Layer(grid*inputDimension, HiddenDimension));
+				weights.push_back(dynamic_cast<Layer*>(factoryForward("inputLayer", params)));
 			else
-				weights.push_back(Layer(grid*HiddenDimension, HiddenDimension));
+				weights.push_back(dynamic_cast<Layer*>(factoryForward("hiddenLayer", params)));
 		}
 	}
 
-	rbf = RBF(begin, end, grid);
-	this->grid = grid;
+	rbf = dynamic_cast<RBF*>(factoryForward("RBF", params));
 }
 
 Eigen::VectorXd KAN::forward(Eigen::VectorXd x)
 {
+
+	if (testing) {
+		Eigen::VectorXd result = x;
+		for (int i = 0; i < weights.size(); ++i) {
+			result = (weights[i]->forward(rbf->forward(result)));
+		}
+		return result;
+	}
 	if (activations.empty()) {
 		activations.push_back(x);
 		for (int i = 0; i < weights.size(); ++i) {
-			activations.push_back(weights[i].forward(rbf.forward(activations[i])));
+			activations.push_back(weights[i]->forward(rbf->forward(activations[i])));
 		}
 	}
 	else {
 		activations[0] = x;
 		for (int i = 0; i < weights.size(); ++i) {
-			activations[i+1] = weights[i].forward(rbf.forward(activations[i]));
+			activations[i+1] = weights[i]->forward(rbf->forward(activations[i]));
 		}
 	}
 	return activations[activations.size()-1];
@@ -100,27 +107,23 @@ void KAN::backpropagation(Eigen::VectorXd y, float lr)
 	dWeights.clear();
 	//first delta and gradient
 	deltas.push_back(y_hat - y);
-	dWeights.push_back(deltas[0] * rbf.forward(activations[activations.size() - 2]).transpose());
-	weights[numOfLayers - 1].weights -= lr * dWeights[0];
+	dWeights.push_back(deltas[0] * rbf->forward(activations[activations.size() - 2]).transpose());
+	weights[params.numOfLayers - 1]->weights -= lr * dWeights[0];
 	//all consequtive deltas and graidents
-	for(int i = 1; i < numOfLayers; ++i) {
-		deltas.push_back(psi((weights[numOfLayers - i].weights.transpose() * deltas[i-1]).cwiseProduct(rbf.dRBF(activations[activations.size() - 1-i]))));
-		dWeights.push_back(deltas[i] * rbf.forward(activations[activations.size() -2-i]).transpose());
-		weights[numOfLayers-1-i].weights -= lr * dWeights[i];
+	for(int i = 1; i < params.numOfLayers; ++i) {
+		deltas.push_back(psi((weights[params.numOfLayers - i]->weights.transpose() * deltas[i-1]).cwiseProduct(rbf->dRBF(activations[activations.size() - 1-i]))));
+		dWeights.push_back(deltas[i] * rbf->forward(activations[activations.size() -2-i]).transpose());
+		weights[params.numOfLayers -1-i]->weights -= lr * dWeights[i];
 	}
 
 }
 
 Eigen::VectorXd KAN::psi(Eigen::VectorXd x)
 {
-	Eigen::VectorXd output(x.size() / grid);
+	Eigen::VectorXd output(x.size() / params.gridSize);
 	
-	for (int i = 0; i < x.size() / grid; i++) {
-		output(i) = x.segment(grid * i, grid).sum();
+	for (int i = 0; i < x.size() / params.gridSize; i++) {
+		output(i) = x.segment(params.gridSize * i, params.gridSize).sum();
 	}
 	return output;
-}
-
-FeedForward::FeedForward()
-{
 }
