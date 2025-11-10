@@ -82,7 +82,7 @@ int main()
 
     
     KAN* kan = dynamic_cast<KAN*>(factoryForward("KAN", params));
-    
+    kan->batchSize = 1;
     //Eigen::MatrixXd X = Eigen::MatrixXd::Random(1000, 1);
     //Eigen::MatrixXd Y = X.array().square();
     trainer(*kan, X, Y);

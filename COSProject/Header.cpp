@@ -120,8 +120,11 @@ Eigen::VectorXd KAN::forward(Eigen::VectorXd x)
 void KAN::backpropagation(Eigen::VectorXd y, float lr)
 {
 	Eigen::VectorXd y_hat = activations[activations.size() - 1];
+	if (this->batchSize == iteration) {
+		dWeights.clear();
+		iteration = 0;
+	}
 	deltas.clear();
-	dWeights.clear();
 	//first delta and gradient
 	if (params.loss == "MAE") {
 		Eigen::RowVectorXd signs(y.size());
@@ -135,14 +138,33 @@ void KAN::backpropagation(Eigen::VectorXd y, float lr)
 	} 
 	else if (params.loss == "MSE")
 		deltas.push_back(y_hat - y);
-	dWeights.push_back(deltas[0] * rbf->forward(activations[activations.size() - 2]).transpose());
-	weights[params.numOfLayers - 1]->weights -= lr * dWeights[0];
+	if (iteration == 0)
+		dWeights.push_back(deltas[0] * rbf->forward(activations[activations.size() - 2]).transpose());
+	else
+		dWeights[0] += deltas[0] * rbf->forward(activations[activations.size() - 2]).transpose();
+	if (batchSize==1)
+		weights[params.numOfLayers - 1]->weights -= lr * dWeights[0];
+	else if (iteration - 1 == batchSize) {
+		weights[params.numOfLayers - 1]->weights -= lr * dWeights[0]/ batchSize;
+	}
 	//all consequtive deltas and graidents
 	for(int i = 1; i < params.numOfLayers; ++i) {
 		deltas.push_back(psi((weights[params.numOfLayers - i]->weights.transpose() * deltas[i-1]).cwiseProduct(rbf->dRBF(activations[activations.size() - 1-i]))));
-		dWeights.push_back(deltas[i] * rbf->forward(activations[activations.size() -2-i]).transpose());
-		weights[params.numOfLayers -1-i]->weights -= lr * dWeights[i];
+		if (batchSize == 1){
+			dWeights.push_back(deltas[i] * rbf->forward(activations[activations.size() -2-i]).transpose());
+			weights[params.numOfLayers - 1 - i]->weights -= lr * dWeights[i];
+		}
+		else if (iteration == 0) {
+			dWeights.push_back(deltas[i] * rbf->forward(activations[activations.size() - 2 - i]).transpose());
+		}
+		else {
+			dWeights[i] += deltas[i] * rbf->forward(activations[activations.size() - 2 - i]).transpose();
+			if (iteration - 1 == batchSize) {
+				weights[params.numOfLayers - 1 - i]->weights -= lr * dWeights[i]/ batchSize;
+			}
+		}
 	}
+	iteration++;
 
 }
 

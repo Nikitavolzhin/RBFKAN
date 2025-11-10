@@ -46,8 +46,11 @@ public:
 	config params;
 	
 	RBF* rbf;
+	int batchSize = 1;
+	int iteration = 0;
 	std::vector<Layer*> weights;
 	std::vector<Eigen::MatrixXd> dWeights;
+	std::vector<Eigen::MatrixXd> weightUpdate;
 	std::vector<Eigen::VectorXd> activations;
 	std::vector<Eigen::VectorXd> deltas;
 	bool testing = false;
