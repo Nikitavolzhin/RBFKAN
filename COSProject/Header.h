@@ -29,7 +29,7 @@ public:
 class Layer : public FeedForward
 {
 public:
-	Layer(int, int);
+	Layer(int, int, std::string);
 	virtual Eigen::VectorXd forward(Eigen::VectorXd);
 
 	int inputDimension;

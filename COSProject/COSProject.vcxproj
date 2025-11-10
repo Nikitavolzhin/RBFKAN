@@ -104,7 +104,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>\COSProject\external\eigen; \COSProject\external\autodiff</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>\COSProject\external\eigen; \COSProject\external\autodiff; \COSProject\external\EigenRand;</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>

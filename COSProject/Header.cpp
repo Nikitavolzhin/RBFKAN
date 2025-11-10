@@ -1,6 +1,9 @@
 #include "Header.h"
 #include <iostream>
 #include <random>
+#include <Eigen/Dense>
+#include <EigenRand/EigenRand>
+#include <cmath>
 
 RBF::RBF(double start, double end, int gridSize)
 {
@@ -41,10 +44,24 @@ Eigen::MatrixXd RBF::dRBF(Eigen::VectorXd value)
 	return dRBF;
 }
 
-Layer::Layer(int inputDimension, int outputDimesion)
+Layer::Layer(int inputDimension, int outputDimension, std::string initialization)
 {
+
+	Eigen::Rand::Vmt19937_64 gen;
+
 	this->inputDimension = inputDimension;
-	this->weights = Eigen::MatrixXd::Random(outputDimesion, inputDimension);
+	if (initialization=="uniform")
+		this->weights = Eigen::MatrixXd::Random(outputDimension, inputDimension);
+	else if (initialization=="normal")
+		this->weights = Eigen::Rand::normal<Eigen::MatrixXd>(outputDimension, inputDimension, gen, 0.00, 1.0);
+	else if (initialization == "He"){
+		this->weights = Eigen::Rand::normal<Eigen::MatrixXd>(outputDimension, inputDimension, gen, 0.00, 2 / inputDimension);
+	}
+	else if (initialization == "Glorot"){
+		this->weights = Eigen::MatrixXd::Random(outputDimension, inputDimension) * sqrt(6 / (outputDimension + inputDimension));
+	}
+	
+	
 }
 
 Eigen::VectorXd Layer::forward(Eigen::VectorXd input)

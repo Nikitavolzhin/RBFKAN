@@ -65,18 +65,19 @@ void trainer(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y) {
 //NB: add passing by reference where needed for the whole work
 int main()
 {
-    Eigen::MatrixXd mat = readCSV("data.csv");
-    Eigen::MatrixXd X = mat.leftCols(1);
+    Eigen::MatrixXd mat = readCSV("data_1.csv");
+    Eigen::MatrixXd X = mat.leftCols(2);
     Eigen::MatrixXd Y = mat.rightCols(1);
     
     config params;
-    params.start = 0;
-    params.end = 1;
-    params.gridSize = 3;
-    params.inputDimension = 1;
+    params.start = -2;
+    params.end = 2;
+    params.gridSize = 5;
+    params.inputDimension = 2;
     params.outputDimension = 1;
-    params.numOfLayers = 3;
+    params.numOfLayers = 2;
     params.hiddenDimension = 3;
+    params.initialization = "He";
 
     
     KAN* kan = dynamic_cast<KAN*>(factoryForward("KAN", params));
@@ -84,6 +85,6 @@ int main()
     //Eigen::MatrixXd X = Eigen::MatrixXd::Random(1000, 1);
     //Eigen::MatrixXd Y = X.array().square();
     trainer(*kan, X, Y);
-
+    trainer(*kan, X, Y);
     return 0;
 }
