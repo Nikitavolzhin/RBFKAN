@@ -123,7 +123,18 @@ void KAN::backpropagation(Eigen::VectorXd y, float lr)
 	deltas.clear();
 	dWeights.clear();
 	//first delta and gradient
-	deltas.push_back(y_hat - y);
+	if (params.loss == "MAE") {
+		Eigen::RowVectorXd signs(y.size());
+		for (int i = 0; i < y.size(); ++i) {
+			if (y_hat[i] - y[i] < 0)
+				signs << -1;
+			else
+				signs << 1;
+		}
+		deltas.push_back(signs);
+	} 
+	else if (params.loss == "MSE")
+		deltas.push_back(y_hat - y);
 	dWeights.push_back(deltas[0] * rbf->forward(activations[activations.size() - 2]).transpose());
 	weights[params.numOfLayers - 1]->weights -= lr * dWeights[0];
 	//all consequtive deltas and graidents

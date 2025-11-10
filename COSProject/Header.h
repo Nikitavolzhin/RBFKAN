@@ -44,7 +44,7 @@ public:
 	virtual Eigen::VectorXd forward(Eigen::VectorXd);
 	void backpropagation(Eigen::VectorXd y, float lr);
 	config params;
-
+	
 	RBF* rbf;
 	std::vector<Layer*> weights;
 	std::vector<Eigen::MatrixXd> dWeights;

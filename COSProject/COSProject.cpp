@@ -78,6 +78,7 @@ int main()
     params.numOfLayers = 2;
     params.hiddenDimension = 3;
     params.initialization = "He";
+    params.loss = "MAE";
 
     
     KAN* kan = dynamic_cast<KAN*>(factoryForward("KAN", params));

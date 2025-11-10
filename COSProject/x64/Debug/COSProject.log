@@ -1,2 +1,6 @@
-﻿  Header.cpp
+﻿  COSProject.cpp
+D:\COSProject\COSProject\COSProject.cpp(42,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\COSProject\COSProject\COSProject.cpp(43,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\COSProject\COSProject\COSProject.cpp(56,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
+D:\COSProject\COSProject\COSProject.cpp(61,32): warning C4305: 'argument': truncation from 'double' to 'float'
   COSProject.vcxproj -> D:\COSProject\x64\Debug\COSProject.exe

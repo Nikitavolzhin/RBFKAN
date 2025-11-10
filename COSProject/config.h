@@ -8,6 +8,7 @@ struct config {
     int gridSize;
     int hiddenDimension;
     int numOfLayers;
+    std::string loss;
     std::string initialization;
 };
 class FeedForward;
