@@ -62,7 +62,7 @@ void trainer(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y) {
         std::cout << (yHat - y).array().square() << std::endl;
     }
 }
-//NB: add passing by reference where needed for the whole work
+
 int main()
 {
     Eigen::MatrixXd mat = readCSV("data_1.csv");

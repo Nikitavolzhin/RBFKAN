@@ -20,7 +20,7 @@ RBF::RBF() : RBF(0, 1, 1)
 {
 }
 
-Eigen::VectorXd RBF::forward(Eigen::VectorXd value) // to do: rewrite to pass by reference 
+Eigen::VectorXd RBF::forward(const Eigen::VectorXd& value) // to do: rewrite to pass by reference 
 {
 	// broacasting
 	// rewrite in a better way
@@ -34,7 +34,7 @@ Eigen::VectorXd RBF::forward(Eigen::VectorXd value) // to do: rewrite to pass by
 	return flatOutput;
 }
 
-Eigen::MatrixXd RBF::dRBF(Eigen::VectorXd value)
+Eigen::MatrixXd RBF::dRBF(Eigen::VectorXd& value)
 {
 	Eigen::MatrixXd v1 = this->centers.transpose().replicate(value.size(), 1);
 	Eigen::MatrixXd v2 = value.replicate(1, this->centers.size());
@@ -64,7 +64,7 @@ Layer::Layer(int inputDimension, int outputDimension, std::string initialization
 	
 }
 
-Eigen::VectorXd Layer::forward(Eigen::VectorXd input)
+Eigen::VectorXd Layer::forward(const Eigen::VectorXd& input)
 {
 	//Eigen::Map<const Eigen::VectorXd> flatInput(input.data(), input.size());
 
@@ -92,7 +92,7 @@ KAN::KAN(config params)
 	rbf = dynamic_cast<RBF*>(factoryForward("RBF", params));
 }
 
-Eigen::VectorXd KAN::forward(Eigen::VectorXd x)
+Eigen::VectorXd KAN::forward(const Eigen::VectorXd& x)
 {
 
 	if (testing) {
@@ -117,7 +117,7 @@ Eigen::VectorXd KAN::forward(Eigen::VectorXd x)
 	return activations[activations.size()-1];
 }
 
-void KAN::backpropagation(Eigen::VectorXd y, float lr)
+void KAN::backpropagation(Eigen::VectorXd& y, float lr)
 {
 	Eigen::VectorXd y_hat = activations[activations.size() - 1];
 	if (this->batchSize == iteration) {
@@ -168,7 +168,7 @@ void KAN::backpropagation(Eigen::VectorXd y, float lr)
 
 }
 
-Eigen::VectorXd KAN::psi(Eigen::VectorXd x)
+Eigen::VectorXd KAN::psi(const Eigen::VectorXd& x)
 {
 	Eigen::VectorXd output(x.size() / params.gridSize);
 	
