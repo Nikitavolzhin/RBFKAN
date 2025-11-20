@@ -4,10 +4,10 @@
 #include <Eigen/Dense>
 #include <EigenRand/EigenRand>
 #include <cmath>
+#include <stdexcept>
 
 RBF::RBF(double start, double end, int gridSize)
 {
-	//To do: write expection for num if it is <2
 
 	this->start = start;
 	this->end = end;
@@ -20,17 +20,15 @@ RBF::RBF() : RBF(0, 1, 1)
 {
 }
 
-Eigen::VectorXd RBF::forward(const Eigen::VectorXd& value) // to do: rewrite to pass by reference 
+Eigen::VectorXd RBF::forward(const Eigen::VectorXd& value)  
 {
-	// broacasting
-	// rewrite in a better way
+
 	Eigen::MatrixXd v1 = this->centers.transpose().replicate(value.size(), 1);
 	Eigen::MatrixXd v2 = value.replicate(1, this->centers.size());
 	Eigen::MatrixXd output = (-((v1 - v2) / this->denom).array().square()).exp().matrix();
 	Eigen::Map<const Eigen::VectorXd> flatOutput(output.data(), output.size());
 
 
-	// gaussian RBF
 	return flatOutput;
 }
 
@@ -66,8 +64,6 @@ Layer::Layer(int inputDimension, int outputDimension, std::string initialization
 
 Eigen::VectorXd Layer::forward(const Eigen::VectorXd& input)
 {
-	//Eigen::Map<const Eigen::VectorXd> flatInput(input.data(), input.size());
-
 	return this->weights * input;
 }
 

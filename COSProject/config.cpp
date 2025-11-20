@@ -2,7 +2,7 @@
 #include "Header.h"
 
 FeedForward* factoryForward(std::string networkType, config params) {
-	//make it as switch statement
+
 	if (networkType == "RBF") {
 		return new RBF(params.start, params.end, params.gridSize);
 	}

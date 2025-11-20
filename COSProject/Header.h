@@ -1,6 +1,7 @@
 #pragma once
 #include <Eigen/Dense>
 #include "config.h"
+#include <cereal/archives/binary.hpp>
 
 class FeedForward {
 public:
@@ -44,7 +45,9 @@ public:
 	virtual Eigen::VectorXd forward(const Eigen::VectorXd&);
 	void backpropagation(Eigen::VectorXd& y, float lr);
 	config params;
+
 	
+
 	RBF* rbf;
 	int batchSize = 1;
 	int iteration = 0;
