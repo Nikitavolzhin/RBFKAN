@@ -45,8 +45,6 @@ public:
 	void backpropagation(Eigen::VectorXd& y, float lr);
 	config params;
 
-	
-
 	RBF* rbf;
 	int batchSize = 1;
 	int iteration = 0;

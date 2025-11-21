@@ -9,8 +9,7 @@
 
 int main()
 {
-    runTests();
-    /*
+    //runTests();
     Eigen::MatrixXd mat = readCSV("data_1.csv");
     Eigen::MatrixXd X = mat.leftCols(2);
     Eigen::MatrixXd Y = mat.rightCols(1);
@@ -23,6 +22,6 @@ int main()
     float learningRate = 0.01;
     int epochs = 10;
     trainer(*kan, X, Y, learningRate, epochs, verbosity);
-    */
+    
     return 0;
 }
