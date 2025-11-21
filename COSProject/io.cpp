@@ -4,7 +4,6 @@
 #include <vector>
 #include "json.hpp"
 
-
 Eigen::MatrixXd readCSV(const std::string& path) {
     std::ifstream file(path);
     if (!file.is_open()) {
@@ -62,6 +61,8 @@ void writeCSV(const Eigen::MatrixXd& matrix, const std::string& path) {
         }
         file << '\n';
     }
+    file.close();
+
 }
 
 config readConfig(const std::string& path) {
@@ -71,6 +72,8 @@ config readConfig(const std::string& path) {
     }
     nlohmann::json j;
     file >> j;
+    file.close();
+
     config params;
 
     params.start = j["start"];
@@ -84,4 +87,25 @@ config readConfig(const std::string& path) {
     params.loss = j["loss"];
 
     return params;
+}
+
+void saveWeights(const KAN& kan, const std::string& path) {
+    std::ofstream file(path);
+    if (!file.is_open()) {
+        std::cout << "Error: Could not open the file";
+        return;
+    }
+    nlohmann::json wegihts;
+    int layers = kan.params.numOfLayers;
+
+    for (int i = 0; i < layers; ++i) {
+        wegihts[i]["rows"] = kan.weights[i]->weights.rows();
+        wegihts[i]["cols"] = kan.weights[i]->weights.cols();
+        wegihts[i]["entries"] = std::vector<double>(
+            kan.weights[i]->weights.data(),
+            kan.weights[i]->weights.data() + kan.weights[i]->weights.size()
+        );
+    }
+    file << wegihts.dump(4);
+    file.close();
 }

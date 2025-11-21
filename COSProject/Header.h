@@ -44,6 +44,7 @@ public:
 	virtual Eigen::VectorXd forward(const Eigen::VectorXd&);
 	void backpropagation(Eigen::VectorXd& y, float lr);
 	config params;
+	void loadWeights(const std::string& path);
 
 	RBF* rbf;
 	int batchSize = 1;

@@ -6,6 +6,9 @@
 #include <cmath>
 #include <stdexcept>
 
+#include <fstream>
+#include "json.hpp"
+
 RBF::RBF(double start, double end, int gridSize)
 {
 
@@ -172,4 +175,30 @@ Eigen::VectorXd KAN::psi(const Eigen::VectorXd& x)
 		output(i) = x.segment(params.gridSize * i, params.gridSize).sum();
 	}
 	return output;
+}
+
+void KAN::loadWeights(const std::string& path) {
+	
+	std::ifstream file(path);
+	if (!file.is_open()) {
+		std::cout << "Error: cannot open the file";
+		return;
+	}
+	nlohmann::json savedWeights;
+	file >> savedWeights;
+	file.close();
+	
+	for (int i = 0; i < params.numOfLayers; ++i) {
+		std::vector<double> data = savedWeights[i]["entries"];
+		if (data.size() != weights[i]->weights.rows()* weights[i]->weights.cols())
+		{
+			std::cout << "Error: matrix size mismatch in saved weights for layer "
+				<< i << "\n";
+			return;
+		}
+		weights[i]->weights = Eigen::Map<Eigen::MatrixXd>(data.data(), int(savedWeights[i]["rows"]), int(savedWeights[i]["cols"]));
+		
+	}
+	std::cout << "Success. Weights loaded\n";
+
 }
