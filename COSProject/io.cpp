@@ -89,6 +89,26 @@ config readConfig(const std::string& path) {
     return params;
 }
 
+void writeConfig(config params, const std::string& path) {
+    std::ofstream file(path);
+    if (!file.is_open()) {
+        throw std::runtime_error("Could not open the file");
+    }
+    nlohmann::json j;
+
+    j["start"] = params.start;
+    j["end"] = params.end;
+    j["gridSize"] = params.gridSize;
+    j["inputDimension"] = params.inputDimension;
+    j["outputDimension"] = params.outputDimension;
+    j["numOfLayers"] = params.numOfLayers;
+    j["hiddenDimension"] = params.hiddenDimension;
+    j["initialization"] = params.initialization;
+    j["loss"] = params.loss;
+    file << j.dump(4);
+    file.close();
+}
+
 void saveWeights(const KAN& kan, const std::string& path) {
     std::ofstream file(path);
     if (!file.is_open()) {
