@@ -1,9 +1,11 @@
 ﻿  COSProject.cpp
 D:\COSProject\COSProject\COSProject.cpp(23,24): warning C4305: 'initializing': truncation from 'double' to 'float'
-  io.cpp
-D:\COSProject\COSProject\io.cpp(38,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\COSProject\COSProject\io.cpp(39,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\COSProject\COSProject\io.cpp(54,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
-D:\COSProject\COSProject\io.cpp(55,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
+  trainer.cpp
+D:\COSProject\COSProject\trainer.cpp(9,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
+D:\COSProject\COSProject\trainer.cpp(19,60): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\COSProject\COSProject\trainer.cpp(22,57): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\COSProject\COSProject\trainer.cpp(38,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
+D:\COSProject\COSProject\trainer.cpp(45,56): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\COSProject\COSProject\trainer.cpp(48,53): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
   Generating Code...
   COSProject.vcxproj -> D:\COSProject\x64\Debug\COSProject.exe

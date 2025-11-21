@@ -7,6 +7,7 @@ void trainer(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y, float lr, int epo
     Eigen::VectorXd y(1);
     float loss = 0;
     int size = X.rows();
+    kan.testing = false;
     for (int epoch=0; epoch<epochs; ++epoch) {
         for (int i = 0; i < size; ++i) {
             x = X.row(i).transpose();
