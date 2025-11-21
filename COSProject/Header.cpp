@@ -53,10 +53,10 @@ Layer::Layer(int inputDimension, int outputDimension, std::string initialization
 	else if (initialization=="normal")
 		this->weights = Eigen::Rand::normal<Eigen::MatrixXd>(outputDimension, inputDimension, gen, 0.00, 1.0);
 	else if (initialization == "He"){
-		this->weights = Eigen::Rand::normal<Eigen::MatrixXd>(outputDimension, inputDimension, gen, 0.00, 2 / inputDimension);
+		this->weights = Eigen::Rand::normal<Eigen::MatrixXd>(outputDimension, inputDimension, gen, 0.00, 2.0 / float(inputDimension));
 	}
 	else if (initialization == "Glorot"){
-		this->weights = Eigen::MatrixXd::Random(outputDimension, inputDimension) * sqrt(6 / (outputDimension + inputDimension));
+		this->weights = Eigen::MatrixXd::Random(outputDimension, inputDimension) * sqrt(6.0 / float(outputDimension + inputDimension));
 	}
 	
 	
@@ -140,7 +140,7 @@ void KAN::backpropagation(Eigen::VectorXd& y, float lr)
 		dWeights[0] += deltas[0] * rbf->forward(activations[activations.size() - 2]).transpose();
 	if (batchSize==1)
 		weights[params.numOfLayers - 1]->weights -= lr * dWeights[0];
-	else if (iteration - 1 == batchSize) {
+	else if (iteration + 1 == batchSize) {
 		weights[params.numOfLayers - 1]->weights -= lr * dWeights[0]/ batchSize;
 	}
 	//all consequtive deltas and graidents
@@ -155,7 +155,7 @@ void KAN::backpropagation(Eigen::VectorXd& y, float lr)
 		}
 		else {
 			dWeights[i] += deltas[i] * rbf->forward(activations[activations.size() - 2 - i]).transpose();
-			if (iteration - 1 == batchSize) {
+			if (iteration + 1 == batchSize) {
 				weights[params.numOfLayers - 1 - i]->weights -= lr * dWeights[i]/ batchSize;
 			}
 		}

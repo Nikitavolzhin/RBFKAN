@@ -1,7 +1,6 @@
 #pragma once
 #include <Eigen/Dense>
 #include "config.h"
-#include <cereal/archives/binary.hpp>
 
 class FeedForward {
 public:
