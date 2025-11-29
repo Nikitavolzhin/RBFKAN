@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdlib>
 #include "Header.h"
 
 
@@ -34,16 +35,15 @@ void testRBF(float a, float b, float c, float d) {
 	}	
 }
 
-void testLayer(float a, float b, float c, int e, int f) {
+void testLayer(float a, float b, float c, int f) {
 	
-	Layer layer = Layer(e, f, "Glorot");
-	if ((layer.weights.rows() == f) and (layer.weights.cols() == e) and (layer.inputDimension == e))
+	Layer layer = Layer(3, f, "Glorot");
+	if ((layer.weights.rows() == f) and (layer.weights.cols() == 3) and (layer.inputDimension == 3))
 		std::cout << "Layer matrix shape OK\n";
 	else {
 		std::cout << "Failed due to incorrect Layer matrix shape\n";
 		return;
 	}
-
 	
 	Eigen::VectorXd input{ {a, b, c} };
 	Eigen::VectorXd output = layer.forward(input);
@@ -99,9 +99,9 @@ void testKAN(float a, float b, float c, float d, int f, int g, int h) {
 }
 
 void runTests() {
-	float a = 4, b = 1, c = 2, d = 3;
-	int e = 3, f = 5, g = 4, h = 2;
+	float a = rand() % 11, b = rand() % 11, c = rand() % 11, d = rand() % 11;
+	int f = rand() % 11, g = rand() % 11, h = rand() % 11;
 	testRBF(a, b, c, d);
-	testLayer(a, b, c, e, f);
+	testLayer(a, b, c, f);
 	testKAN(a, b, c, d, f, g, h);
 }

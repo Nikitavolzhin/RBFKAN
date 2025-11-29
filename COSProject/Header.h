@@ -12,13 +12,10 @@ public:
 class RBF : public FeedForward
 {
 public:
-	// contructors
 	RBF(double, double, int);
 	RBF();
-	// memeber functions
 	Eigen::VectorXd forward(const Eigen::VectorXd&) override;
 
-	// data mebers
 	double start;
 	double end;
 	double denom;

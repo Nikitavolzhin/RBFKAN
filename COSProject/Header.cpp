@@ -28,7 +28,9 @@ Eigen::VectorXd RBF::forward(const Eigen::VectorXd& value)
 
 	Eigen::MatrixXd v1 = this->centers.transpose().replicate(value.size(), 1);
 	Eigen::MatrixXd v2 = value.replicate(1, this->centers.size());
-	Eigen::MatrixXd output = (-((v1 - v2) / this->denom).array().square()).exp().matrix();
+	Eigen::MatrixXd output = v1 - v2;
+	output = output / this->denom;
+	output = (-output.array().square()).exp().matrix();
 	Eigen::Map<const Eigen::VectorXd> flatOutput(output.data(), output.size());
 
 
@@ -39,7 +41,9 @@ Eigen::MatrixXd RBF::dRBF(Eigen::VectorXd& value)
 {
 	Eigen::MatrixXd v1 = this->centers.transpose().replicate(value.size(), 1);
 	Eigen::MatrixXd v2 = value.replicate(1, this->centers.size());
-	Eigen::MatrixXd output = (-((v1 - v2) / this->denom).array().square()).exp().matrix();
+	Eigen::MatrixXd output = v1 - v2;
+	output = output / this->denom;
+	output = (-output.array().square()).exp().matrix();
 	Eigen::MatrixXd dRBFMatrix = -2 / (this->denom) * output.cwiseProduct(v1 - v2);
 	Eigen::Map < const Eigen::VectorXd > dRBF(dRBFMatrix.data(), dRBFMatrix.size());
 	return dRBF;
@@ -118,6 +122,7 @@ Eigen::VectorXd KAN::forward(const Eigen::VectorXd& x)
 
 void KAN::backpropagation(Eigen::VectorXd& y, float lr)
 {
+	Eigen::VectorXd delta;
 	Eigen::VectorXd y_hat = activations[activations.size() - 1];
 	if (this->batchSize == iteration) {
 		dWeights.clear();
@@ -148,7 +153,10 @@ void KAN::backpropagation(Eigen::VectorXd& y, float lr)
 	}
 	//all consequtive deltas and graidents
 	for(int i = 1; i < params.numOfLayers; ++i) {
-		deltas.push_back(psi((weights[params.numOfLayers - i]->weights.transpose() * deltas[i-1]).cwiseProduct(rbf->dRBF(activations[activations.size() - 1-i]))));
+		delta = (weights[params.numOfLayers - i]->weights.transpose() * deltas[i - 1]);
+		delta = delta.cwiseProduct(rbf->dRBF(activations[activations.size() - 1 - i]));
+		delta = psi(delta);
+		deltas.push_back(delta);
 		if (batchSize == 1){
 			dWeights.push_back(deltas[i] * rbf->forward(activations[activations.size() -2-i]).transpose());
 			weights[params.numOfLayers - 1 - i]->weights -= lr * dWeights[i];

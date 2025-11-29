@@ -9,7 +9,6 @@
 
 int main()
 {
-    
     runTests();
     Eigen::MatrixXd mat = readCSV("data_1.csv");
     Eigen::MatrixXd X = mat.leftCols(2);
@@ -21,8 +20,9 @@ int main()
     kan->batchSize = 8;
     bool verbosity = true;
     float learningRate = 0.01;
-    int epochs = 10;
-    trainer(*kan, X, Y, learningRate, epochs, verbosity);
+    int epochs = 50;
+    int patience = 10;
+    trainer(*kan, X, Y, learningRate, epochs, verbosity, patience);
     saveWeights(*kan, "test_wegihts_saved.json");
     test(*kan, X, Y);
     kan->loadWeights("test_wegihts_saved.json");
