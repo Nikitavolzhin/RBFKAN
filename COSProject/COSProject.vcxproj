@@ -131,14 +131,14 @@
   <ItemGroup>
     <ClCompile Include="COSProject.cpp" />
     <ClCompile Include="config.cpp" />
-    <ClCompile Include="Header.cpp" />
+    <ClCompile Include="classes.cpp" />
     <ClCompile Include="io.cpp" />
     <ClCompile Include="trainer.cpp" />
     <ClCompile Include="unitTesting.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="config.h" />
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="classes.h" />
     <ClInclude Include="io.h" />
     <ClInclude Include="trainer.h" />
     <ClInclude Include="unitTesting.h" />

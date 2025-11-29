@@ -1,7 +1,7 @@
 {
     "end": 2,
-    "gridSize": 5,
-    "hiddenDimension": 2,
+    "gridSize": 8,
+    "hiddenDimension": 4,
     "initialization": "He",
     "inputDimension": 2,
     "loss": "MSE",

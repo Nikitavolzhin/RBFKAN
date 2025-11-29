@@ -1,5 +1,5 @@
 #include "config.h"
-#include "Header.h"
+#include "classes.h"
 
 FeedForward* factoryForward(std::string networkType, config params) {
 

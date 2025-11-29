@@ -1,6 +1,6 @@
 #include <iostream>
 #include <cstdlib>
-#include "Header.h"
+#include "classes.h"
 
 
 void testRBF(float a, float b, float c, float d) {

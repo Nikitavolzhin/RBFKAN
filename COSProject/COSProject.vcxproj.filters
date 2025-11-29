@@ -18,7 +18,7 @@
     <ClCompile Include="COSProject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Header.cpp">
+    <ClCompile Include="classes.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="config.cpp">
@@ -35,7 +35,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h">
+    <ClInclude Include="classes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="config.h">

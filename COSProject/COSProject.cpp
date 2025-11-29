@@ -2,7 +2,7 @@
 #include <Eigen/Dense>
 #include <cstdlib>
 #include <unsupported/Eigen/CXX11/Tensor>
-#include "Header.h"
+#include "classes.h"
 #include "io.h"
 #include "trainer.h"
 #include "unitTesting.h"
@@ -25,8 +25,8 @@ int main()
     kan->summary();
     bool verbosity = true;
     float learningRate = 0.01;
-    int epochs = 10;
-    int patience = 0;
+    int epochs = 30;
+    int patience = 8;
     trainer(*kan, X_train, Y_train, learningRate, epochs, verbosity, patience);
     saveWeights(*kan, "test_wegihts_saved.json");
     test(*kan, X_test, Y_test);
