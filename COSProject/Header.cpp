@@ -120,6 +120,26 @@ Eigen::VectorXd KAN::forward(const Eigen::VectorXd& x)
 	return activations[activations.size()-1];
 }
 
+void KAN::summary()
+{
+	std::cout << "KAN Summary\n";
+	std::cout << "Grid size: " << params.gridSize << "\n";
+	std::cout << "Grid start: " << params.start << "\n";
+	std::cout << "Grid end: " << params.end << "\n";
+	std::cout << "Layers: " << params.numOfLayers << "\n";
+	for (int i = 0; i < weights.size(); ++i) {
+		std::cout << " Layer " << i
+			<< ": " << weights[i]->weights.rows()
+			<< " x " << weights[i]->weights.cols() << "\n";
+	}
+	std::cout << "Batch size: " << batchSize << "\n";
+	std::cout << "Mode: ";
+	if (testing)
+		std::cout << " tesing\n";
+	else
+		std::cout << " training \n";
+}
+
 void KAN::backpropagation(Eigen::VectorXd& y, float lr)
 {
 	Eigen::VectorXd delta;

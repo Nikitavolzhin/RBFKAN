@@ -18,6 +18,7 @@ int main()
     
     KAN* kan = dynamic_cast<KAN*>(factoryForward("KAN", params));
     kan->batchSize = 8;
+    kan->summary();
     bool verbosity = true;
     float learningRate = 0.01;
     int epochs = 50;
