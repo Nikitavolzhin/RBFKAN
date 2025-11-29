@@ -81,3 +81,37 @@ void test(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y) {
     std::cout << "Loss: " << loss / size << "\n";
     
 }
+
+
+void trainTestSplit(const Eigen::MatrixXd& X, const Eigen::MatrixXd& Y, double testRatio,
+    Eigen::MatrixXd& X_train, Eigen::MatrixXd& X_test, Eigen::MatrixXd& Y_train, Eigen::MatrixXd& Y_test) 
+{
+    int n = X.rows();
+
+    int numTest = std::round(n * testRatio);
+    int numTrain = n - numTest;
+
+    std::vector<int> indices(n);
+    for (int i = 0; i < n; ++i)
+        indices[i] = i;
+
+    std::mt19937 randomEngine(std::random_device{}());
+    std::shuffle(indices.begin(), indices.end(), randomEngine);
+
+    X_train.resize(numTrain, X.cols());
+    X_test.resize(numTest, X.cols());
+    Y_train.resize(numTrain, Y.cols());
+    Y_test.resize(numTest, Y.cols());
+
+    for (int i = 0; i < numTrain; ++i) {
+        int idx = indices[i];
+        X_train.row(i) = X.row(idx);
+        Y_train.row(i) = Y.row(idx);
+    }
+
+    for (int i = 0; i < numTest; ++i) {
+        int idx = indices[numTrain + i];
+        X_test.row(i) = X.row(idx);
+        Y_test.row(i) = Y.row(idx);
+    }
+}
