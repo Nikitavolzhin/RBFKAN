@@ -2,6 +2,8 @@
 #include <iostream>
 #include <cmath>
 #include <limits>
+#include <random>
+
 
 void trainer(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y, float lr, int epochs, bool verbosity, int patience) {
     Eigen::VectorXd x(1);
@@ -12,8 +14,17 @@ void trainer(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y, float lr, int epo
     kan.testing = false;
     int noImprove = 0;
     float bestLoss = std::numeric_limits<int>::max();
+
+    std::vector<int> indices(size);
+    for (int i = 0; i < size; ++i)
+        indices[i] = i;
+
     for (int epoch=0; epoch<epochs; ++epoch) {
-        for (int i = 0; i < size; ++i) {
+
+        std::mt19937 randomEngine(std::random_device{}());
+        std::shuffle(indices.begin(), indices.end(), randomEngine);
+
+        for (int i : indices) {
             x = X.row(i).transpose();
             yHat = kan.forward(x);
             y = Y.row(i).transpose();
@@ -47,6 +58,8 @@ void trainer(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y, float lr, int epo
         }
     }
 }
+
+
 void test(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y) {
     Eigen::VectorXd x(1);
     Eigen::VectorXd yHat(1);

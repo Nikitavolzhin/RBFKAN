@@ -1,2 +1,9 @@
-﻿  Header.cpp
+﻿  trainer.cpp
+D:\COSProject\COSProject\trainer.cpp(13,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
+D:\COSProject\COSProject\trainer.cpp(16,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
+D:\COSProject\COSProject\trainer.cpp(34,60): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\COSProject\COSProject\trainer.cpp(37,57): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\COSProject\COSProject\trainer.cpp(68,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
+D:\COSProject\COSProject\trainer.cpp(75,56): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
+D:\COSProject\COSProject\trainer.cpp(78,53): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
   COSProject.vcxproj -> D:\COSProject\x64\Debug\COSProject.exe
