@@ -1,5 +1,6 @@
 #include "config.h"
 #include "classes.h"
+#include <iostream>
 
 FeedForward* factoryForward(std::string networkType, config params) {
 
@@ -23,4 +24,6 @@ FeedForward* factoryForward(std::string networkType, config params) {
 			params
 		);
 	}
+	std::cout << "Error: incorrect network type\n";
+	return nullptr;
 }

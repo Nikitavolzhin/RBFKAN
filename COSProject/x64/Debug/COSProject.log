@@ -1,27 +1,7 @@
-﻿  COSProject.cpp
-D:\COSProject\COSProject\COSProject.cpp(27,24): warning C4305: 'initializing': truncation from 'double' to 'float'
-  config.cpp
-  classes.cpp
-  io.cpp
-D:\COSProject\COSProject\io.cpp(38,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\COSProject\COSProject\io.cpp(39,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\COSProject\COSProject\io.cpp(54,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
-D:\COSProject\COSProject\io.cpp(55,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
-  trainer.cpp
-D:\COSProject\COSProject\trainer.cpp(13,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
-D:\COSProject\COSProject\trainer.cpp(16,20): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\COSProject\COSProject\trainer.cpp(34,60): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-D:\COSProject\COSProject\trainer.cpp(37,57): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-D:\COSProject\COSProject\trainer.cpp(68,14): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
-D:\COSProject\COSProject\trainer.cpp(75,56): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-D:\COSProject\COSProject\trainer.cpp(78,53): warning C4244: '+=': conversion from 'double' to 'float', possible loss of data
-D:\COSProject\COSProject\trainer.cpp(89,11): warning C4244: 'initializing': conversion from 'Eigen::Index' to 'int', possible loss of data
-D:\COSProject\COSProject\trainer.cpp(91,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  unitTesting.cpp
-D:\COSProject\COSProject\unitTesting.cpp(102,10): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\COSProject\COSProject\unitTesting.cpp(102,27): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\COSProject\COSProject\unitTesting.cpp(102,44): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-D:\COSProject\COSProject\unitTesting.cpp(102,61): warning C4244: 'initializing': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
-D:\COSProject\COSProject\config.cpp(26): warning C4715: 'factoryForward': not all control paths return a value
+﻿  classes.cpp
+D:\COSProject\COSProject\classes.cpp(214,14): warning C4244: 'initializing': conversion from 'Eigen::EigenBase<Derived>::Index' to 'int', possible loss of data
+          with
+          [
+              Derived=Eigen::Matrix<double,-1,1,0,-1,1>
+          ]
   COSProject.vcxproj -> D:\COSProject\x64\Debug\COSProject.exe

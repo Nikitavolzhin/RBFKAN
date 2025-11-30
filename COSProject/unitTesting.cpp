@@ -64,7 +64,7 @@ void testLayer(float a, float b, float c, int f) {
 
 void testKAN(float a, float b, float c, float d, int f, int g, int h) {
 	config params;
-	params.end = -1;
+	params.end = 1;
 	params.gridSize = 3;
 	params.hiddenDimension = f;
 	params.initialization = "Glorot";
@@ -72,7 +72,7 @@ void testKAN(float a, float b, float c, float d, int f, int g, int h) {
 	params.loss = "MSE";
 	params.numOfLayers = 2;
 	params.outputDimension = h;
-	params.start = 1;
+	params.start = -1;
 	KAN kan = KAN(params);
 	Eigen::VectorXd input{ {a, b, c, -b, d, c, -c, -a, b} };
 	Eigen::VectorXd output = kan.psi(input);

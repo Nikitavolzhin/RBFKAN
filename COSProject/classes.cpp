@@ -11,6 +11,15 @@
 
 RBF::RBF(double start, double end, int gridSize)
 {
+	if (end <= start) {
+		std::cout << "Error: incorrect start/end RBF values. Used default -1/1 instead\n";
+		start = -1;
+		end = 1;
+	}
+	if (gridSize < 2) {
+		std::cout << "Error: incorrect grid size for RBF. Used default values of 2 instead\n";
+		gridSize = 2;
+	}
 
 	this->start = start;
 	this->end = end;
@@ -49,17 +58,19 @@ Eigen::MatrixXd RBF::dRBF(Eigen::VectorXd& value)
 	return dRBF;
 }
 
-Layer::Layer(int inputDimension, int outputDimension, std::string initialization)
+Layer::Layer(unsigned inputDimension, unsigned outputDimension, std::string initialization)
 {
 
 	Eigen::Rand::Vmt19937_64 gen;
 
 	this->inputDimension = inputDimension;
+
 	if (initialization=="uniform")
 		this->weights = Eigen::MatrixXd::Random(outputDimension, inputDimension);
-	else if (initialization=="normal")
+	else if (initialization == "normal") {
 		this->weights = Eigen::Rand::normal<Eigen::MatrixXd>(outputDimension, inputDimension, gen, 0.00, 1.0);
-	else if (initialization == "He"){
+	}
+	else if (initialization == "He") {
 		this->weights = Eigen::Rand::normal<Eigen::MatrixXd>(outputDimension, inputDimension, gen, 0.00, 2.0 / float(inputDimension));
 	}
 	else if (initialization == "Glorot"){
@@ -71,6 +82,9 @@ Layer::Layer(int inputDimension, int outputDimension, std::string initialization
 
 Eigen::VectorXd Layer::forward(const Eigen::VectorXd& input)
 {
+	if (input.size() != this->weights.cols()) {
+		throw std::invalid_argument("Layer dimension mismatch");
+	}
 	return this->weights * input;
 }
 
@@ -197,9 +211,10 @@ void KAN::backpropagation(Eigen::VectorXd& y, float lr)
 
 Eigen::VectorXd KAN::psi(const Eigen::VectorXd& x)
 {
-	Eigen::VectorXd output(x.size() / params.gridSize);
+	int newSize = x.size() / params.gridSize;
+	Eigen::VectorXd output(newSize);
 	
-	for (int i = 0; i < x.size() / params.gridSize; i++) {
+	for (int i = 0; i < newSize; i++) {
 		output(i) = x.segment(params.gridSize * i, params.gridSize).sum();
 	}
 	return output;

@@ -15,18 +15,18 @@ public:
 	RBF(double, double, int);
 	RBF();
 	Eigen::VectorXd forward(const Eigen::VectorXd&) override;
+	Eigen::MatrixXd dRBF(Eigen::VectorXd&);
 
 	double start;
 	double end;
 	double denom;
 	Eigen::VectorXd centers;
-	Eigen::MatrixXd dRBF(Eigen::VectorXd&);
 };
 
 class Layer : public FeedForward
 {
 public:
-	Layer(int, int, std::string);
+	Layer(unsigned, unsigned, std::string);
 	virtual Eigen::VectorXd forward(const Eigen::VectorXd&);
 
 	int inputDimension;
@@ -49,7 +49,6 @@ public:
 	int iteration = 0;
 	std::vector<Layer*> weights;
 	std::vector<Eigen::MatrixXd> dWeights;
-	std::vector<Eigen::MatrixXd> weightUpdate;
 	std::vector<Eigen::VectorXd> activations;
 	std::vector<Eigen::VectorXd> deltas;
 	bool testing = false;

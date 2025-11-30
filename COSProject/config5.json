@@ -1,11 +1,11 @@
 {
     "end": 3,
     "gridSize": 8,
-    "hiddenDimension": 1,
-    "initialization": "He",
+    "hiddenDimension": 3,
+    "initialization": "normal",
     "inputDimension": 2,
     "loss": "MSE",
     "numOfLayers": 1,
     "outputDimension": 1,
-    "start": -1
+    "start": -2
 }

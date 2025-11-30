@@ -1,0 +1,11 @@
+{
+    "end": 2,
+    "gridSize": 12,
+    "hiddenDimension": 4,
+    "initialization": "He",
+    "inputDimension": 4,
+    "loss": "MSE",
+    "numOfLayers": 3,
+    "outputDimension": 1,
+    "start": -2
+}

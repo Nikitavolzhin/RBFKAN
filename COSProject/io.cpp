@@ -128,4 +128,5 @@ void saveWeights(const KAN& kan, const std::string& path) {
     }
     file << wegihts.dump(4);
     file.close();
+    std::cout << "Wegihts were exportd successfully!\n";
 }

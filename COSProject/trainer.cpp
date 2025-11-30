@@ -38,7 +38,7 @@ void trainer(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y, float lr, int epo
                 }
             }
         }
-        if (patience != 0) {
+        if (patience > 0) {
             if (bestLoss > loss / size) {
                 bestLoss = loss / size;
                 noImprove = 0;
@@ -86,6 +86,10 @@ void test(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y) {
 void trainTestSplit(const Eigen::MatrixXd& X, const Eigen::MatrixXd& Y, double testRatio,
     Eigen::MatrixXd& X_train, Eigen::MatrixXd& X_test, Eigen::MatrixXd& Y_train, Eigen::MatrixXd& Y_test) 
 {
+    if ((testRatio <= 0) or (testRatio >= 1)) {
+        std::cout << "Error: testRatio must be between 0 and 1. The default value of 0.2 is set\n";
+        testRatio = 0.2;
+    }
     int n = X.rows();
 
     int numTest = std::round(n * testRatio);
