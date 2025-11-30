@@ -13,7 +13,7 @@ void trainer(KAN& kan, Eigen::MatrixXd& X, Eigen::MatrixXd& Y, float lr, int epo
     int size = X.rows();
     kan.testing = false;
     int noImprove = 0;
-    float bestLoss = std::numeric_limits<int>::max();
+    float bestLoss = std::numeric_limits<float>::max();
 
     std::vector<int> indices(size);
     for (int i = 0; i < size; ++i)
