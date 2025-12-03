@@ -9,9 +9,8 @@
 
 int main()
 {
-    
-    Eigen::MatrixXd mat = readCSV("deeper.csv");
-    config params = readConfig("config6.json");
+    Eigen::MatrixXd mat = readCSV("sin.csv");
+    config params = readConfig("config3.json");
     Eigen::MatrixXd X = mat.leftCols(params.inputDimension);
     Eigen::MatrixXd Y = mat.rightCols(params.outputDimension);
     Eigen::MatrixXd X_train, X_test, Y_train, Y_test;
@@ -29,9 +28,5 @@ int main()
     int epochs = 200;
     int patience = 50;
     trainer(*kan, X_train, Y_train, learningRate, epochs, verbosity, patience);
-    //saveWeights(*kan, "test_wegihts_saved.json");
-    //test(*kan, X_test, Y_test);
-    //kan->loadWeights("test_wegihts_saved.json");
-    //kan->summary();
     test(*kan, X_test, Y_test);
 }
