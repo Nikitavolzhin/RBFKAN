@@ -31,11 +31,6 @@ A KAN layer consists of:
 1. A **Radial Basis Function (RBF)** expansion applied element-wise
 2. A **linear transformation** (learnable weight matrix)
 
-Formally, a KAN computes:
-\[
-KAN(x) = W_L \cdot RBF_L(\dots W_1 \cdot RBF_1(x))
-\]
-
 This implementation uses **Gaussian RBFs** with equally spaced centers, offering:
 - Faster training than spline-based KANs
 - Comparable approximation quality in practice
